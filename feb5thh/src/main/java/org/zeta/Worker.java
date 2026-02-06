@@ -1,12 +1,28 @@
 package org.zeta;
 
-public class Worker extends Thread{
-        Worker(String name){
-            super(name);
-        }
-        public void run(){
-            for(int i=0;i<3;i++) {
-                System.out.println(Thread.currentThread());
-            }
-        }
+public class Worker extends Thread {
+    private int data;
+
+    private boolean available = false;
+
+
+    synchronized void produce(int value) throws InterruptedException {
+
+        while (available) wait();
+        data = value;
+        available = true;
+        System.out.println("Produced: " + value);
+        notify();
+
     }
+
+
+    synchronized void consume() throws InterruptedException {
+
+        while (!available) wait();
+        available = false;
+        System.out.println("Consumed: " + data);
+        notify();
+
+    }
+}
