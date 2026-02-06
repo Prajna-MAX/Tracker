@@ -1,10 +1,10 @@
 package org.zeta;
 
 public class WithdrawTask implements Runnable{
-    Account account;
+    LoanAccount account;
     int amt;
 
-    WithdrawTask(Account account,int amt){
+    WithdrawTask(LoanAccount account, int amt){
         this.account=account;
         this.amt=amt;
 

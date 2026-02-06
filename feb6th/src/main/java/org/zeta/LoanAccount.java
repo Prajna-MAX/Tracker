@@ -1,9 +1,15 @@
 package org.zeta;
 
-public class Account {
+public class LoanAccount {
     private int bal;
+    private int id;
 
-    Account(int bal){
+    public int getId() {
+        return id;
+    }
+
+    LoanAccount(int id, int bal){
+        this.id=id;
         this.bal=bal;
     }
 

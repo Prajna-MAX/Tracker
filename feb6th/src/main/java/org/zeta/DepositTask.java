@@ -1,10 +1,10 @@
 package org.zeta;
 
 public class DepositTask implements Runnable{
-    Account account;
+    LoanAccount account;
     int amt;
 
-    DepositTask(Account account,int amt){
+    DepositTask(LoanAccount account, int amt){
         this.account=account;
         this.amt=amt;
 
@@ -12,6 +12,7 @@ public class DepositTask implements Runnable{
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName());
+
         account.deposit(amt);
 
             System.out.println("depositTask : successfull");
