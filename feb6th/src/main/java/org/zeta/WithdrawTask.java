@@ -12,11 +12,12 @@ public class WithdrawTask implements Runnable{
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName());
-        boolean success=account.withdraw(amt);
-        if(success){
-            System.out.println("successfull");
+        try {
+            account.withdraw(amt);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        else System.out.println("failed");
+
 
     }
 }

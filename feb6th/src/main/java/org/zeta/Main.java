@@ -34,9 +34,9 @@ public class Main {
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
-            int i=sc.nextInt();
+            int option=sc.nextInt();
 
-            switch (i){
+            switch (option){
                 case 1:
                     int amt=account.getBal();
                     System.out.println(amt);
@@ -65,6 +65,11 @@ public class Main {
 
                 case 5:
                     executor.shutdown();
+                    break;
+
+                    default:
+                    System.out.println("Invalid choice");
+
             }
         }
     }
