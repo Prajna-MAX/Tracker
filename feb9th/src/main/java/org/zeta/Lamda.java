@@ -1,50 +1,60 @@
 package org.zeta;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-interface arrayIncrement{
+@FunctionalInterface
+interface ArrayIncrement {
     void increment(int[] array);
 }
 
-interface customIncrement{
-    void increment(int[]array,int inc);
+@FunctionalInterface
+interface CustomIncrement {
+    void increment(int[] array, int inc);
 }
 
 public class Lamda {
-    public static void main(String args[]) {
-        arrayIncrement addAll=(array)->{
-            System.out.println("Increment all numbers");
-            int[] newArray=new int[array.length];
-           for(int i=0;i<array.length;i++){
-               newArray[i]=array[i]+2;
-               System.out.println(newArray[i]);
-           }
-        };
-        arrayIncrement addEven=(array)->{
-            System.out.println("Increment all even numbers");
-            int[] newArray2=new int[array.length];
+    public static void main(String[] args) {
 
-            for(int i=0;i<array.length;i++){
-                if(array[i]%2==0)
-                    newArray2[i]=array[i]+2;
-                System.out.println(newArray2[i]);
+        int[] array = {1, 2, 3, 4, 5,6};
+
+        // Increment all elements by 2
+        ArrayIncrement addAll = arr -> {
+            System.out.println("Increment all numbers:");
+            for (int n : arr) {
+                System.out.println(n + 2);
             }
         };
 
-        customIncrement add=(array,num)->{
-            System.out.println("Increment according to num");
-            int[] newArray3=new int[array.length];
-            for(int i=0;i<array.length;i++){
-                newArray3[i]=array[i]+num;
-                System.out.println(newArray3[i]);
+        // Increment only even elements by 2
+        ArrayIncrement addEven = arr -> {
+            System.out.println("Increment even numbers:");
+            for (int n : arr) {
+                if (n % 2 == 0)
+                    System.out.println(n + 2);
+                else
+                    System.out.println(n);
             }
         };
 
-        int[] array ={1,2,3,4,5};
+        // Increment all elements by given number
+        CustomIncrement addByNum = (arr, num) -> {
+            System.out.println("Increment by " + num + ":");
+            for (int n : arr) {
+                System.out.println(n + num);
+            }
+        };
+
+        ArrayIncrement skipThree=(arr)->{
+            System.out.println("Sum of digits of every third number");
+            int sum=0;
+            for(int i=2;i< arr.length;i+=3){
+                System.out.println(arr[i]);
+                sum+=arr[i];
+            }
+            System.out.println("Final:"+sum);
+        };
+
         addAll.increment(array);
         addEven.increment(array);
-        add.increment(array,5);
-
+        addByNum.increment(array, 5);
+        skipThree.increment(array);
     }
 }
