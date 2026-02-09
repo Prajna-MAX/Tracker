@@ -1,15 +1,19 @@
 package org.zeta;
 
+
+import java.util.function.Function;
+
 public class Loans {
     int amt;
-    int tenure;
+    static int tenure;
     Loans(int amt,int tenure){
         this.amt=amt;
         this.tenure=tenure;
 }
 
-    double callLoan(int amt){
-        validateAmount.validate(amt);
-        return amt*(12.2/100)*tenure;
-    }
+
+    static  Function<Integer, Double> callLoan = amt -> {
+        validateAmount.v.val(amt);       // validate the amount
+        return amt * (12.2 / 100) * tenure; // calculate interest
+    };
 }

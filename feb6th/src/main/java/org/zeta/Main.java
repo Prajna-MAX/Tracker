@@ -1,23 +1,30 @@
+
 package org.zeta;
 
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.zeta.Bank.accountExists;
+import static org.zeta.Bank.checkBal;
+import static org.zeta.Loans.callLoan;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+
+    private static Object AddAccount;
 
     public static void main(String[] args) {
         int initialBal;
         System.out.println("give initial balance");
         Scanner sc=new Scanner(System.in);
         initialBal= sc.nextInt();
-        validateAmount.validate(initialBal);
+        validateAmount.v.val(initialBal);
         Bank bank=new Bank(12.2);
         LoanAccount account=new LoanAccount(123,initialBal);
 
-        bank.addAccount(account);
+        addAccount.accept(account);
 
         ExecutorService executor= Executors.newFixedThreadPool(3);
 
@@ -41,21 +48,21 @@ public class Main {
                 case 2:
                     System.out.println("Enter amount");
                     int dep= sc.nextInt();
-                    validateAmount.validate(dep);
+                    validateAmount.v.val(dep);
                     executor.execute(new DepositTask(account,dep));
                     break;
                 case 3:
                     System.out.println("Enter amount");
                     int with = sc.nextInt();
-                    validateAmount.validate(with);
+                    validateAmount.v.val(with);
                     executor.execute(new WithdrawTask(account,with));
 
                     break;
                 case 4:
                     int a1=sc.nextInt();
-                    validateAmount.validate(a1);
+                    validateAmount.v.val(a1);
                     int a2=sc.nextInt();
-                    validateAmount.validate(a2);
+                    validateAmount.v.val(a2);
                     executor.execute(new WithdrawTask(account,a1));
                     executor.execute(new WithdrawTask(account,a2));
                     break;
@@ -63,15 +70,16 @@ public class Main {
                     System.out.println("enter id");
                     int id=sc.nextInt();
                     try {
-                        if (Bank.checkAcc(id) && Bank.checkBal(account)){
+
+                        if (accountExists.test(id) && checkBal.test(account)){
                             System.out.println("enter amount");
                             int amount = sc.nextInt();
-                            validateAmount.validate(amount);
+                            validateAmount.v.val(amount);
                             System.out.println("enter tenure");
                             int tenure=sc.nextInt();
-                            validateAmount.validate(tenure);
+                            validateAmount.v.val(tenure);
                             Loans loans = new Loans(amount,tenure);
-                            System.out.println("Interest after "+tenure+"yr" + loans.callLoan(amount));
+                            System.out.println("Interest after "+tenure+"yr" + callLoan.apply(amount));
                         }
                         else throw new Exception("Criteria doesnt match");
                     } catch (Exception e) {
@@ -80,7 +88,7 @@ public class Main {
                 case 6:
                     executor.shutdown();
                     break;
-                    default:
+                default:
                     System.out.println("Invalid choice");
 
             }
