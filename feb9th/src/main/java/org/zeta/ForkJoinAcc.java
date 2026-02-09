@@ -1,5 +1,6 @@
 package org.zeta;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,7 +44,7 @@ class AccTask extends RecursiveTask<Integer> {
 public class ForkJoinAcc {
     public static void main(String[] args) {
         List<Account> data = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             Account acc = new Account(Math.random() * 100);
             System.out.println("i  " + i + "  bal " + acc.balance);
             data.add(acc);
@@ -51,7 +52,10 @@ public class ForkJoinAcc {
 
 
         ForkJoinPool fork = new ForkJoinPool();
-        System.out.println(fork.invoke(new AccTask(data, 0, data.size())));
+        AccTask task=new AccTask(data,0,data.size());
+        long start= System.currentTimeMillis();
+        System.out.println(fork.invoke(task));
+        System.out.println(System.currentTimeMillis()-start);
 
     }
 }
