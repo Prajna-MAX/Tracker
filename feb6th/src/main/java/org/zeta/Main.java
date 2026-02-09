@@ -66,8 +66,10 @@ public class Main {
                         if (Bank.checkAcc(id) && Bank.checkBal(account)){
                             System.out.println("enter amount");
                             int amount = sc.nextInt();
+                            validateAmount.validate(amount);
                             System.out.println("enter tenure");
                             int tenure=sc.nextInt();
+                            validateAmount.validate(tenure);
                             Loans loans = new Loans(amount,tenure);
                             System.out.println("Interest after "+tenure+"yr" + loans.callLoan(amount));
                         }
