@@ -1,10 +1,10 @@
 package org.zeta;
 
 public class DepositTask implements Runnable{
-    LoanAccount account;
+    Account account;
     int amt;
 
-    DepositTask(LoanAccount account, int amt){
+    DepositTask(Account account, int amt){
         this.account=account;
         this.amt=amt;
 

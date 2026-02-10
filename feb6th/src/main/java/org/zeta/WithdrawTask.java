@@ -1,19 +1,22 @@
 package org.zeta;
 
-public class WithdrawTask implements Runnable{
-    LoanAccount account;
+
+public class WithdrawTask implements Runnable {
+    Account account;
     int amt;
 
-    WithdrawTask(LoanAccount account, int amt){
-        this.account=account;
-        this.amt=amt;
+    WithdrawTask(Account account, int amt) {
+        this.account = account;
+        this.amt = amt;
 
     }
+
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName());
+
         try {
-            account.withdraw(amt);
+            Boolean success = account.withdraw(amt);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -21,3 +24,4 @@ public class WithdrawTask implements Runnable{
 
     }
 }
+

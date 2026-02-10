@@ -1,13 +1,13 @@
 package org.zeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-interface addAccount {
-    boolean checkAcc(int id);
-}
+
 
 public class Bank {
     double interest;
@@ -16,23 +16,19 @@ public class Bank {
         this.interest = interest;
     }
 
-    static List<LoanAccount> accounts = new ArrayList<>();
+    static Map<Integer,Account> accounts = new HashMap<>();
 
-    static Consumer<LoanAccount> addAccount =
-            account -> accounts.add(account);
+    static Consumer<Account> addAccount =
+            account -> accounts.put(account.getId(),account);
 
-
-    static Predicate<Integer> accountExists= (accountId) -> {
-        for (LoanAccount acc : accounts) {
-            if (acc.getId() == accountId) return true;
-
-        }
-        return false;
+    Account account = new Account(123, 1000);
 
 
-    };
 
-    static Predicate<LoanAccount> checkBal = account-> account.getBal() >= 1000;
+    static Predicate<Integer> accountExists = (accountId) -> accounts.containsKey(accountId);
+
+
+    static Predicate<Account> checkBal = account -> account.getBal() >= 1000;
 
 
 }
