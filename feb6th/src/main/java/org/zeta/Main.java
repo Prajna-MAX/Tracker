@@ -3,14 +3,15 @@ package org.zeta;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import static org.zeta.Bank.*;
 import static org.zeta.Loans.callLoan;
 
 public class Main {
+    static Logger logger= Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
         ExecutorService executor = Executors.newFixedThreadPool(3);
         int counter=1;
@@ -83,6 +84,7 @@ public class Main {
             System.out.println("Account already exists!");
             return;
         }
+        validateAmount.v.val(id);
 
         int balance = readInt(sc, "Enter Initial Balance: ");
 
@@ -141,7 +143,7 @@ public class Main {
 
             System.out.println("Transfer Successful!");
         } catch (Exception e) {
-            System.out.println("Transfer Failed: " + e.getMessage());
+            logger.severe("Transfer Failed: " + e.getMessage());
         }
     }
 
@@ -190,7 +192,7 @@ public class Main {
                 throw new Exception();
             }
         } catch (Exception e) {
-            System.out.println("Criteria not met for loan");
+            logger.severe("Criteria not met for loan");
         }
     }
 }

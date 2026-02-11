@@ -9,7 +9,7 @@ public class validateAmount {
         try {
             if (amt <= 0) throw new Exception("Less amt");
         } catch (Exception e) {
-            System.out.println("negative amount");
+            System.out.println("negative not allowed");
         }
     };
 
