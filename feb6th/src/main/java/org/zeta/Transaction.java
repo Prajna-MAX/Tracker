@@ -17,8 +17,8 @@ Transaction(Account a1,Account a2){
 
         }
         else{
-            System.out.println("FROM: " + from.getId());
-            System.out.println("TO: " + to.getId());
+            System.out.println("FROM: " + to.getId());
+            System.out.println("TO: " + from.getId());
 
             to.withdraw(amount);
             from.deposit(amount);

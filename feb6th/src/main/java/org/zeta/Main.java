@@ -1,140 +1,196 @@
-
 package org.zeta;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.zeta.Bank.*;
 import static org.zeta.Loans.callLoan;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-    private static Object AddAccount;
-
     public static void main(String[] args) {
-        int initialBal;
-        System.out.println("give initial balance");
+
         Scanner sc = new Scanner(System.in);
-        initialBal = sc.nextInt();
-        validateAmount.v.val(initialBal);
-        Bank bank = new Bank(12.2);
-        Account account = new Account(123, initialBal);
-
-        addAccount.accept(account);
-
         ExecutorService executor = Executors.newFixedThreadPool(3);
-
+        int counter=1;
         while (true) {
-            System.out.println("MULTITHREADED BANKING SYSTEM");
-            System.out.println("1. Check Balance");
-            System.out.println("2. Deposit Money");
-            System.out.println("3. Withdraw Money");
-            System.out.println("4. Simulate Parallel Withdrawals");
-            System.out.println("5. Loans");
-            System.out.println("6. Transaction");
-            System.out.println("7. Exit");
-            System.out.print("Enter your choice: ");
-            int option;
-            try {
-                option = sc.nextInt();
-            } catch (InputMismatchException e) {
-                throw new IllegalArgumentException("Input cannot be a string");
-            }
+            printMenu();
+            int option = readInt(sc, "Enter your choice: ");
 
             switch (option) {
-                case 1:
-                    System.out.println("Enter accId");
-                    int id = sc.nextInt();
-
-                    try {
-                        Account acc = accounts.get(id);
-                        if (acc != null) {
-                            int amt = acc.getBal();
-                            System.out.println("Balance: " + amt);
-                        } else {
-                            throw new Exception("No account with id " + id);
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-
-                    break;
-                case 2:
-                    System.out.println("Enter accId");
-                    int id1 = sc.nextInt();
-
-                    try {
-                        Account acc = accounts.get(id1);
-                        if (acc != null) {
-                            System.out.println("Enter amount");
-                            int dep = sc.nextInt();
-                            validateAmount.v.val(dep);
-
-                            executor.execute(new DepositTask(account, dep));
-                        } else {
-                            throw new Exception("No account with id " + id1);
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 3:
-                    System.out.println("Enter amount");
-                    int with = sc.nextInt();
-                    validateAmount.v.val(with);
-                    executor.execute(new WithdrawTask(account, with));
-
-                    break;
-                case 4:
-                    int a1 = sc.nextInt();
-                    validateAmount.v.val(a1);
-                    int a2 = sc.nextInt();
-                    validateAmount.v.val(a2);
-                    executor.execute(new WithdrawTask(account, a1));
-                    executor.execute(new WithdrawTask(account, a2));
-                    break;
-                case 5:
-                    System.out.println("enter id");
-                    int accid = sc.nextInt();
-                    try {
-
-                        if (accountExists.test(accid) && checkBal.test(account)) {
-                            System.out.println("enter amount");
-                            int amount = sc.nextInt();
-                            validateAmount.v.val(amount);
-                            System.out.println("enter tenure");
-                            int tenure = sc.nextInt();
-                            validateAmount.v.val(tenure);
-                            Loans loans = new Loans(amount, tenure);
-                            System.out.println("Interest after " + tenure + "yr" + callLoan.apply(amount));
-                        } else throw new Exception("Criteria doesnt match");
-                    } catch (Exception e) {
-                        System.out.println("Criteria doesnt match");
-                        ;
-                    }
-                    break;
-                case 6:
-                    Account account2 = new Account(234, 2000);
-                    accounts.put(234,account2);
-                    Transaction t = new Transaction(account, account2);
-                    System.out.println("Enter amount for transaction");
-                    int amount = sc.nextInt();
-                    t.transact(account, account2, amount);
-
-                    break;
-
-
-                case 7:
+                case 1 -> createAccount(sc);
+                case 2 -> transferMoney(sc);
+                case 3 -> viewTransactions(sc);
+                case 4->viewAllAccounts();
+                case 5 -> handleLoans(sc);
+                case 6 -> {
                     executor.shutdown();
-                    break;
-                default:
-                    System.out.println("Invalid choice");
+                    System.out.println("Exiting...");
+                    return;
+                }
+                default -> System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+
+    private static void printMenu() {
+        System.out.println("\n--- BANKING SYSTEM ---");
+        System.out.println("1. Create Account");
+        System.out.println("2. Transfer Money");
+        System.out.println("3. View Transactions");
+        System.out.println("4. View Account");
+        System.out.println("5. Loans");
+        System.out.println("6. Exit");
+    }
+
+
+
+    private static int readInt(Scanner sc, String msg) {
+        System.out.print(msg);
+        while (true) {
+            try {
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.print("Invalid input! Enter a number: ");
+                sc.nextLine();
+            }
+        }
+    }
+
+    private static void viewAllAccounts() {
+
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available.");
+            return;
+        }
+
+        System.out.println("\n--- List of Accounts ---");
+
+        for (Account acc : accounts.values()) {
+            System.out.println("Account ID: " + acc.getId() +
+                    " | Balance: " + acc.getBal());
+        }
+    }
+
+
+    private static void createAccount(Scanner sc) {
+
+        int id = readInt(sc, "Enter Account ID: ");
+
+        if (accounts.containsKey(id)) {
+            System.out.println("Account already exists!");
+            return;
+        }
+
+        int balance = readInt(sc, "Enter Initial Balance: ");
+
+        try {
+            validateAmount.v.val(balance);
+
+            Account acc = new Account(id, balance);
+            addAccount.accept(acc);
+
+            System.out.println("Account Created Successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Invalid amount: " + e.getMessage());
+        }
+    }
+
+
+
+    private static void transferMoney(Scanner sc) {
+
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available.");
+            return;
+        }
+
+        System.out.println("Available Accounts: " + accounts.keySet());
+
+        int fromId = readInt(sc, "Enter YOUR account ID: ");
+        int toId = readInt(sc, "Enter RECEIVER account ID: ");
+
+        if (!accounts.containsKey(fromId) || !accounts.containsKey(toId)) {
+            System.out.println("Invalid account ID(s)");
+            return;
+        }
+
+        if (fromId == toId) {
+            System.out.println("Cannot transfer to the same account!");
+            return;
+        }
+
+        int amount = readInt(sc, "Enter transfer amount: ");
+
+        try {
+            validateAmount.v.val(amount);
+            if (accounts.get(fromId).getBal() < amount)
+                throw new IllegalArgumentException("Insufficient balance for transfer!");
+            Account fromAcc = accounts.get(fromId);
+            Account toAcc = accounts.get(toId);
+
+            if (fromAcc.getBal() < amount) {
+                throw new IllegalArgumentException("Insufficient balance for transfer!");
             }
 
+            Transaction t = new Transaction(fromAcc, toAcc);
+            t.transact(fromAcc, toAcc, amount);
+
+            System.out.println("Transfer Successful!");
+        } catch (Exception e) {
+            System.out.println("Transfer Failed: " + e.getMessage());
+        }
+    }
+
+
+
+
+    private static void viewTransactions(Scanner sc) {
+
+        int id = readInt(sc, "Enter Account ID: ");
+        Account acc = accounts.get(id);
+
+        if (acc == null) {
+            System.out.println("Account not found!");
+            return;
+        }
+
+        List<String> history = acc.getTransactions();
+
+        if (history.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        System.out.println("\nTransaction History for Account " + id);
+        history.forEach(System.out::println);
+    }
+
+
+
+    private static void handleLoans(Scanner sc) {
+
+        int accId = readInt(sc, "Enter account ID: ");
+        Account acc = accounts.get(accId);
+
+        try {
+            if (acc != null && accountExists.test(accId) && checkBal.test(acc)) {
+                int amount = readInt(sc, "Enter loan amount: ");
+                validateAmount.v.val(amount);
+
+                int tenure = readInt(sc, "Enter tenure (years): ");
+                validateAmount.v.val(tenure);
+
+                System.out.println("Interest after "
+                        + tenure + " yr: " + callLoan.apply(amount));
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            System.out.println("Criteria not met for loan");
         }
     }
 }

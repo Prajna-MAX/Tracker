@@ -2,6 +2,7 @@ package org.zeta;
 
 interface validate{
     void val(int amt);
+
 }
 public class validateAmount {
     static validate v = (amt) -> {
@@ -11,6 +12,8 @@ public class validateAmount {
             System.out.println("negative amount");
         }
     };
+
+
 };
 
 

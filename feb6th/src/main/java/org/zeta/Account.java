@@ -17,6 +17,10 @@ public class Account {
         return bal;
     }
 
+    public void setBal(int bal) {
+        this.bal = bal;
+    }
+
     public int getId() {
         return id;
     }
@@ -36,11 +40,19 @@ public class Account {
     }
 
     synchronized void deposit(int amount) {
-
-
         bal += amount;
         TransactionInfo t1= new TransactionInfo("CREDIT", amount);
         transactions.add(String.valueOf(t1));
         System.out.println(transactions);
     }
+
+
+    public void addTransaction(String t) {
+        transactions.add(t);
+    }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
 }
