@@ -187,7 +187,7 @@ public class Main {
                 validateAmount.v.val(tenure);
 
                 System.out.println("Interest after "
-                        + tenure + " yr: " + callLoan.apply(amount));
+                        + tenure + " yr: " + callLoan.apply(amount,tenure));
             } else {
                 throw new Exception();
             }

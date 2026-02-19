@@ -1,0 +1,35 @@
+package org.zeta.service;
+
+import org.zeta.exception.BankingException;
+import org.zeta.model.Account;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class BankService {
+
+    private Map<Integer, Account> accounts = new HashMap<>();
+
+    public void createAccount(int accNo, String name, double balance) {
+        if (accounts.containsKey(accNo))
+            throw new BankingException("Account already exists");
+
+        accounts.put(accNo, new Account(accNo, name, balance));
+    }
+
+    public Account getAccount(int accNo) {
+        Account acc = accounts.get(accNo);
+        if (acc == null)
+            throw new BankingException("Account not found");
+        return acc;
+    }
+
+    public void deposit(int accNo, double amount) {
+        getAccount(accNo).deposit(amount);
+    }
+
+    public void withdraw(int accNo, double amount) {
+        getAccount(accNo).withdraw(amount);
+    }
+}
+

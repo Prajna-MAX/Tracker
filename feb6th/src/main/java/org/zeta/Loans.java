@@ -1,6 +1,7 @@
 package org.zeta;
 
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Loans {
@@ -12,8 +13,9 @@ public class Loans {
 }
 
 
-    static  Function<Integer, Double> callLoan = amt -> {
+    static BiFunction<Integer,Integer, Double> callLoan = (amt,tenure) -> {
         validateAmount.v.val(amt);       // validate the amount
-        return amt * (12.2 / 100) * tenure; // calculate interest
+        Double interest=amt * (12.2 / 100) * tenure;
+        return interest;
     };
 }
