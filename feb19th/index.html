@@ -7,7 +7,14 @@
 <body>
 <h2>Task Manager</h2>
 <input type="text" id="taskInput" placeholder="Enter task">
+<input type="date" id="dueDate">
 <button id="addBtn">Add Task</button>
+<div>
+    <button onclick="setFilter('all')">All</button>
+        <button onclick="setFilter('completed')">Completed</button>
+    <button onclick="setFilter('pending')">Pending</button>
+
+    </div>
 <ul id="taskList"></ul>
 <script src="script.js"></script>
 </body>
