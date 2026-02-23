@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Amit",
+      "email": "amit@test.com"
+    },
+    {
+      "id": "2",
+      "name": "Neha",
+      "email": "neha@test.com"
+    },
+    {
+      "id": "5ab8",
+      "name": "prajna",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female"
+    },
+    {
+      "id": "7dca",
+      "name": "msan",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female"
+    },
+    {
+      "id": "60ac",
+      "name": "mn",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female"
+    },
+    {
+      "id": "cf43",
+      "name": "sd",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female",
+      "skills": "Java"
+    },
+    {
+      "id": "9705",
+      "name": "mn",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female"
+    },
+    {
+      "id": "39cb",
+      "name": "nbq",
+      "email": "prajnap@zeta.tech",
+      "gender": "Female",
+      "skills": [
+        "Python"
+      ]
+    }
+  ]
+}
